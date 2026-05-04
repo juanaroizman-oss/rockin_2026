@@ -84,12 +84,12 @@
             </td>
           </tr>
           <tr>
-            <td colspan="4" style="padding-top:8px;font-size:8px;color:#aaa;">
-            La información contenida en este mensaje y/o archivo(s) adjunto(s) enviada es confidencial/privilegiada y está destinada a ser leída solo por la(s) persona(s) que va dirigida. Le recordamos que sus datos personales, dirección de correo electrónico, recabados del propio interesado, han sido incorporados en el sistema de tratamiento de ROCKIN MEDIA, para el envío de comunicaciones ordinarias, así como sobre nuestros productos y servicios y se conservarán mientras exista un interés mutuo para ello o subsista la base legitimadora para dicho tratamiento según información facilitada previamente. Los datos se conservarán durante no más tiempo del necesario para mantener el fin del tratamiento y no serán comunicados a terceros, salvo obligación legal. Y de conformidad con el Reglamento (UE) núm. 2016/679, General de Protección de Datos y la LO 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales, puede ejercer de forma totalmente gratuita los derechos de acceso, información, rectificación, supresión y olvido, limitación del tratamiento, oposición, portabilidad y a no ser objeto de decisiones individuales automatizadas enviando un e-mail a rafa@rockinmedia.es. Si usted lee este mensaje y no es el destinatario señalado, el empleado o el agente responsable de entregar el mensaje al destinatario, o ha recibido esta comunicación por error, le informamos que está totalmente prohibida y puede ser ilegal cualquier divulgación o reproducción de esta comunicación y le rogamos que nos lo notifique inmediatamente y nos devuelva el mensaje original a la dirección arriba mencionada. Gracias.
-            <br><br>
-            Si no desea recibir información por correo electrónico nos lo puede notificar en esta misma dirección.
-            <br><br>
-            © Responsable: ROCKIN MEDIA, S.L. | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed; text-decoration:underline;">Aviso legal</a> | B87928743 – Calle de Marcenado 37, 28002, Madrid 
+            <td colspan="4" style="padding-top:8px;font-size:8px;color:#aaa;text-align:justify;">
+              La información contenida en este mensaje y/o archivo(s) adjunto(s) enviada es confidencial/privilegiada y está destinada a ser leída solo por la(s) persona(s) que va dirigida. Le recordamos que sus datos personales, dirección de correo electrónico, recabados del propio interesado, han sido incorporados en el sistema de tratamiento de ROCKIN MEDIA, para el envío de comunicaciones ordinarias, así como sobre nuestros productos y servicios y se conservarán mientras exista un interés mutuo para ello o subsista la base legitimadora para dicho tratamiento según información facilitada previamente. Los datos se conservarán durante no más tiempo del necesario para mantener el fin del tratamiento y no serán comunicados a terceros, salvo obligación legal. Y de conformidad con el Reglamento (UE) núm. 2016/679, General de Protección de Datos y la LO 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales, puede ejercer de forma totalmente gratuita los derechos de acceso, información, rectificación, supresión y olvido, limitación del tratamiento, oposición, portabilidad y a no ser objeto de decisiones individuales automatizadas enviando un e-mail a rafa@rockinmedia.es. Si usted lee este mensaje y no es el destinatario señalado, el empleado o el agente responsable de entregar el mensaje al destinatario, o ha recibido esta comunicación por error, le informamos que está totalmente prohibida y puede ser ilegal cualquier divulgación o reproducción de esta comunicación y le rogamos que nos lo notifique inmediatamente y nos devuelva el mensaje original a la dirección arriba mencionada. Gracias.
+              <br><br>
+              Si no desea recibir información por correo electrónico nos lo puede notificar en esta misma dirección.
+              <br><br>
+              © Responsable: ROCKIN MEDIA, S.L. | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed;text-decoration:underline;">Aviso legal</a> | B87928743 – Calle de Marcenado 37, 28002, Madrid
             </td>
           </tr>
         </tbody>
@@ -114,7 +114,6 @@
   <div id="firma-render"></div>
 
   <script>
-    // Extrae frames de un GIF usando un canvas
     async function extractGifFrames(url) {
       const response = await fetch(url);
       const buffer = await response.arrayBuffer();
@@ -130,7 +129,7 @@
         const imageData = ctx.createImageData(gr.width, gr.height);
         gr.decodeAndBlitFrameRGBA(i, imageData.data);
         ctx.putImageData(imageData, 0, 0);
-        frames.push({ canvas, delay: info.delay * 10 }); // delay en ms
+        frames.push({ canvas, delay: info.delay * 10 });
       }
       return frames;
     }
@@ -147,44 +146,11 @@
       const n = document.getElementById('nombre').value.trim();
       const a = document.getElementById('apellidos').value.trim();
       const c = document.getElementById('cargo').value.trim();
-      return `<table style="table-layout:fixed;border-collapse:collapse;width:600px;font-family:Montserrat,Arial,sans-serif;"><tbody><tr><td style="width:100px;padding-right:10px;"><img src="img/ROCKIN-2026.gif" width="100" style="display:block;border:0;max-width:100px;" /></td><td style="width:300px;padding:0;text-align:left;vertical-align:middle;"><div style="font-size:24px;font-weight:600;line-height:1.4;color:#111;">${n} ${a}</div><div style="font-size:12px;font-weight:400;text-transform:uppercase;letter-spacing:3px;display:inline-block;background:linear-gradient(to right,#2de2fb,#3be692);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${c}</div></td><td style="width:1px;padding:0;"><table style="width:1px;border-collapse:collapse;"><tr><td style="width:1px;background:linear-gradient(to bottom,#2de2fb,#3be692);height:120px;"></td></tr></table></td><td style="width:200px;padding:0 0 0 40px;text-align:left;"><table style="border-collapse:collapse;"><tr><td style="padding-right:20px;"><img src="img/GOOGLE.png" width="80" /></td><td><img src="img/HUBSPOT.png" width="80" /></td><td><img src="img/META.png" width="80"/></td></tr></table></td></tr><tr><td colspan="4" style="padding-top:10px;font-size:9px;line-height:12px;color:#888;">La información contenida en este mensaje es confidencial. © ROCKIN MEDIA, S.L. | B87928743 – Calle de Marcenado 37, 28002, Madrid | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed;">Aviso legal</a></td></tr></tbody></table>`;
+      return `<table style="table-layout:fixed;border-collapse:collapse;width:600px;font-family:Montserrat,Arial,sans-serif;"><tbody><tr><td style="width:100px;padding-right:10px;"><img src="img/ROCKIN-2026.gif" width="100" style="display:block;border:0;max-width:100px;" /></td><td style="width:300px;padding:0;text-align:left;vertical-align:middle;"><div style="font-size:24px;font-weight:600;line-height:1.4;color:#111;">${n} ${a}</div><div style="font-size:12px;font-weight:400;text-transform:uppercase;letter-spacing:3px;display:inline-block;background:linear-gradient(to right,#2de2fb,#3be692);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${c}</div></td><td style="width:1px;padding:0;"><table style="width:1px;border-collapse:collapse;"><tr><td style="width:1px;background:linear-gradient(to bottom,#2de2fb,#3be692);height:120px;"></td></tr></table></td><td style="width:200px;padding:0 0 0 40px;text-align:left;"><table style="border-collapse:collapse;"><tr><td style="padding-right:20px;"><img src="img/GOOGLE.png" width="80" /></td><td><img src="img/HUBSPOT.png" width="80" /></td><td><img src="img/META.png" width="80"/></td></tr></table></td></tr><tr><td colspan="4" style="padding-top:10px;font-size:9px;line-height:12px;color:#888;text-align:justify;"><p style="margin:0;">La información contenida en este mensaje y/o archivo(s) adjunto(s) enviada es confidencial/privilegiada y está destinada a ser leída solo por la(s) persona(s) que va dirigida. Le recordamos que sus datos personales, dirección de correo electrónico, recabados del propio interesado, han sido incorporados en el sistema de tratamiento de ROCKIN MEDIA, para el envío de comunicaciones ordinarias, así como sobre nuestros productos y servicios y se conservarán mientras exista un interés mutuo para ello o subsista la base legitimadora para dicho tratamiento según información facilitada previamente. Los datos se conservarán durante no más tiempo del necesario para mantener el fin del tratamiento y no serán comunicados a terceros, salvo obligación legal. Y de conformidad con el Reglamento (UE) núm. 2016/679, General de Protección de Datos y la LO 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales, puede ejercer de forma totalmente gratuita los derechos de acceso, información, rectificación, supresión y olvido, limitación del tratamiento, oposición, portabilidad y a no ser objeto de decisiones individuales automatizadas enviando un e-mail a rafa@rockinmedia.es. Si usted lee este mensaje y no es el destinatario señalado, el empleado o el agente responsable de entregar el mensaje al destinatario, o ha recibido esta comunicación por error, le informamos que está totalmente prohibida y puede ser ilegal cualquier divulgación o reproducción de esta comunicación y le rogamos que nos lo notifique inmediatamente y nos devuelva el mensaje original a la dirección arriba mencionada. Gracias.<br><br>Si no desea recibir información por correo electrónico nos lo puede notificar en esta misma dirección.<br><br>© Responsable: ROCKIN MEDIA, S.L. | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed;text-decoration:underline;">Aviso legal</a> | B87928743 – Calle de Marcenado 37, 28002, Madrid</p></td></tr></tbody></table>`;
     }
 
     function copyHTML() {
       navigator.clipboard.writeText(getHTML()).then(() => setStatus('¡HTML copiado!', 'success'));
-    }
-
-    function canvasToIndexed(canvas) {
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width, h = canvas.height;
-      const pixels = ctx.getImageData(0, 0, w, h).data;
-      const colorMap = new Map();
-      const palette = [0xffffff];
-      colorMap.set(0xffffff, 0);
-      const indexed = new Uint8Array(w * h);
-      for (let i = 0; i < w * h; i++) {
-        const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2], a = pixels[i*4+3];
-        if (a < 128) { indexed[i] = 0; continue; }
-        const hex = (r << 16) | (g << 8) | b;
-        if (!colorMap.has(hex)) {
-          if (palette.length < 256) { colorMap.set(hex, palette.length); palette.push(hex); }
-          else {
-            let best = 0, bestDist = Infinity;
-            for (let p = 0; p < palette.length; p++) {
-              const pr = (palette[p] >> 16) & 0xff, pg = (palette[p] >> 8) & 0xff, pb = palette[p] & 0xff;
-              const d = (r-pr)**2 + (g-pg)**2 + (b-pb)**2;
-              if (d < bestDist) { bestDist = d; best = p; }
-            }
-            indexed[i] = best; continue;
-          }
-        }
-        indexed[i] = colorMap.get(hex);
-      }
-      let pow2 = 2;
-      while (pow2 < palette.length) pow2 *= 2;
-      pow2 = Math.min(pow2, 256);
-      while (palette.length < pow2) palette.push(0x000000);
-      return { indexed, palette, w, h };
     }
 
     async function generateGIF() {
@@ -198,11 +164,9 @@
       setStatus('Extrayendo frames del logo...', 'loading');
 
       try {
-        // 1. Extraer frames del logo GIF
         const logoFrames = await extractGifFrames('img/ROCKIN-2026.gif');
         setStatus(`Generando ${logoFrames.length} frames...`, 'loading');
 
-        // 2. Cargar imágenes de partners
         const loadImg = src => new Promise((res, rej) => {
           const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = src;
         });
@@ -210,7 +174,6 @@
           loadImg('img/GOOGLE.png'), loadImg('img/HUBSPOT.png'), loadImg('img/META.png')
         ]);
 
-        // 3. Para cada frame del logo, renderizar la firma completa
         const scale = 2;
         const firmaW = 640 * scale, firmaH = 160 * scale;
         const gifFrames = [];
@@ -219,9 +182,9 @@
           const fc = document.createElement('canvas');
           fc.width = firmaW; fc.height = firmaH;
           const ctx = fc.getContext('2d');
+          ctx.scale(scale, scale);
 
           // Fondo blanco
-          ctx.scale(scale, scale);
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, 640, 160);
 
@@ -229,7 +192,7 @@
           ctx.fillStyle = '#000000';
           ctx.fillRect(10, 10, 100, 110);
 
-          // Logo (frame actual)
+          // Logo animado
           ctx.drawImage(logoFrames[fi].canvas, 10, 10, 100, 110);
 
           // Nombre
@@ -237,7 +200,7 @@
           ctx.font = '600 24px Arial';
           ctx.fillText(`${n} ${a}`, 140, 55);
 
-          // Cargo con degradado real
+          // Cargo con degradado
           const cargoText = c.toUpperCase();
           ctx.font = '500 12px Arial';
           const cargoWidth = ctx.measureText(cargoText).width;
@@ -254,7 +217,7 @@
           ctx.fillStyle = grad;
           ctx.fillRect(390, 20, 2, 100);
 
-          // Logos partners — mantener proporciones originales
+          // Logos partners
           const drawImg = (img, x, y, maxW, maxH) => {
             const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
             const w = img.naturalWidth * ratio;
@@ -265,15 +228,29 @@
           drawImg(imgHubspot, 478, 20, 68, 90);
           drawImg(imgMeta,    550, 20, 68, 90);
 
-          // Disclaimer
+          // Disclaimer completo con word wrap
           ctx.fillStyle = '#aaaaaa';
-          ctx.font = '8px Arial';
-          ctx.fillText('© ROCKIN MEDIA, S.L. | B87928743 – Calle de Marcenado 37, 28002, Madrid', 10, 148);
+          ctx.font = '7.5px Arial';
+          const disclaimer = 'La información contenida en este mensaje y/o archivo(s) adjunto(s) enviada es confidencial/privilegiada y está destinada a ser leída solo por la(s) persona(s) que va dirigida. Le recordamos que sus datos personales, dirección de correo electrónico, recabados del propio interesado, han sido incorporados en el sistema de tratamiento de ROCKIN MEDIA, para el envío de comunicaciones ordinarias, así como sobre nuestros productos y servicios y se conservarán mientras exista un interés mutuo. Los datos no serán comunicados a terceros, salvo obligación legal. De conformidad con el RGPD (UE) 2016/679 y la LO 3/2018, puede ejercer sus derechos enviando un e-mail a rafa@rockinmedia.es. Si no desea recibir información notifíquenoslo. © Responsable: ROCKIN MEDIA, S.L. | Aviso legal | B87928743 – Calle de Marcenado 37, 28002, Madrid';
+          const maxLineW = 618;
+          const lineH = 9;
+          const dWords = disclaimer.split(' ');
+          let dLine = '';
+          let dy = 127;
+          for (let dw of dWords) {
+            const test = dLine + dw + ' ';
+            if (ctx.measureText(test).width > maxLineW && dLine !== '') {
+              ctx.fillText(dLine.trim(), 10, dy);
+              dLine = dw + ' ';
+              dy += lineH;
+              if (dy > 158) break;
+            } else { dLine = test; }
+          }
+          if (dy <= 158) ctx.fillText(dLine.trim(), 10, dy);
 
           gifFrames.push({ canvas: fc, delay: logoFrames[fi].delay });
         }
 
-        // 4. Codificar con gif.js usando worker local
         setStatus('Codificando GIF animado...', 'loading');
 
         const gif = new GIF({
@@ -296,7 +273,7 @@
           link.download = `firma-${n}-${a}.gif`;
           link.click();
           URL.revokeObjectURL(url);
-          setStatus('\u00a1GIF animado descargado!', 'success');
+          setStatus('¡GIF animado descargado!', 'success');
           btn.disabled = false;
         });
 
@@ -305,7 +282,7 @@
         });
 
         gif.render();
-        return; // el finally se ejecuta antes del finished, lo manejamos en el evento
+        return;
 
       } catch (e) {
         console.error(e);

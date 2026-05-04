@@ -207,7 +207,8 @@
         ]);
 
         // 3. Para cada frame del logo, renderizar la firma completa
-        const firmaW = 640, firmaH = 160;
+        const scale = 2;
+        const firmaW = 640 * scale, firmaH = 160 * scale;
         const gifFrames = [];
 
         for (let fi = 0; fi < logoFrames.length; fi++) {
@@ -216,8 +217,9 @@
           const ctx = fc.getContext('2d');
 
           // Fondo blanco
+          ctx.scale(scale, scale);
           ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, firmaW, firmaH);
+          ctx.fillRect(0, 0, 640, 160);
 
           // Fondo negro para el logo
           ctx.fillStyle = '#000000';
@@ -267,7 +269,7 @@
 
         const gif = new GIF({
           workers: 2,
-          quality: 10,
+          quality: 1,
           width: firmaW,
           height: firmaH,
           workerScript: 'gif.worker.js',

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Firma · ROCKIN MEDIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', Arial, sans-serif; background: #0a0a0a; color: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
+    header { text-align: center; margin-bottom: 40px; }
+    header img { width: 120px; margin-bottom: 16px; }
+    header h1 { font-size: 13px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: #888; }
+    .card { background: #141414; border: 0.5px solid #2a2a2a; border-radius: 16px; padding: 28px 32px; width: 100%; max-width: 640px; margin-bottom: 20px; }
+    .card-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-grid.full { grid-template-columns: 1fr; }
+    .field label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .field input { width: 100%; background: #0a0a0a; border: 0.5px solid #2a2a2a; border-radius: 8px; padding: 12px 14px; font-size: 14px; font-family: 'Montserrat', Arial, sans-serif; color: #f0f0f0; outline: none; transition: border-color 0.2s; }
+    .field input:focus { border-color: #2de2fb; }
+    .field input::placeholder { color: #333; }
+    .preview-card { background: #fff; border-radius: 12px; padding: 20px; overflow-x: auto; }
+    .actions { display: flex; gap: 12px; margin-top: 20px; }
+    .btn { flex: 1; padding: 14px; border-radius: 10px; font-family: 'Montserrat', Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: opacity 0.2s, transform 0.1s; }
+    .btn:active { transform: scale(0.98); }
+    .btn-gif { background: linear-gradient(to right, #2de2fb, #3be692); color: #0a0a0a; }
+    .btn-html { background: #1e1e1e; color: #888; border: 0.5px solid #2a2a2a; }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .status { text-align: center; font-size: 12px; letter-spacing: 1px; color: #555; min-height: 20px; margin-top: 12px; }
+    .status.loading { color: #2de2fb; }
+    .status.success { color: #3be692; }
+    .status.error { color: #ff5a5a; }
+    .instructions { background: #0f0f0f; border: 0.5px solid #1e1e1e; border-radius: 12px; padding: 20px 24px; width: 100%; max-width: 640px; }
+    .instructions h2 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 16px; }
+    .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(to bottom right, #2de2fb22, #3be69222); border: 0.5px solid #2de2fb44; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #2de2fb; flex-shrink: 0; }
+    .step p { font-size: 13px; color: #666; line-height: 1.6; }
+    .step strong { color: #999; font-weight: 500; }
+    footer { margin-top: 40px; font-size: 11px; color: #333; letter-spacing: 2px; text-transform: uppercase; }
+    #firma-render { position: fixed; left: -9999px; top: 0; background: white; padding: 20px; font-family: Arial, sans-serif; }
+    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } .actions { flex-direction: column; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="img/ROCKIN-2026.gif" alt="ROCKIN MEDIA" />
+    <h1>Genera tu firma</h1>
+  </header>
+
+  <div class="card">
+    <p class="card-title">Tus datos</p>
+    <div class="form-grid">
+      <div class="field"><label>Nombre</label><input type="text" id="nombre" placeholder="Ana" oninput="updatePreview()" /></div>
+      <div class="field"><label>Apellidos</label><input type="text" id="apellidos" placeholder="García López" oninput="updatePreview()" /></div>
+    </div>
+    <div class="form-grid full">
+      <div class="field"><label>Puesto / Cargo</label><input type="text" id="cargo" placeholder="Marketing Manager" oninput="updatePreview()" /></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Previsualización</p>
+    <div class="preview-card">
+      <table style="table-layout:fixed;border-collapse:collapse;width:580px;font-family:Montserrat,Arial,sans-serif;">
+        <tbody>
+          <tr>
+            <td style="width:100px;padding-right:10px;vertical-align:middle;"><img src="img/ROCKIN-2026.gif" width="100" style="display:block;border:0;" /></td>
+            <td style="width:270px;padding:0;text-align:left;vertical-align:middle;">
+              <div id="prev-nombre" style="font-size:22px;font-weight:600;line-height:1.4;color:#111;">Nombre Apellidos</div>
+              <div id="prev-cargo" style="font-size:11px;text-transform:uppercase;letter-spacing:3px;display:inline-block;background:linear-gradient(to right,#2de2fb,#3be692);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Puesto / Cargo</div>
+            </td>
+            <td style="width:1px;padding:0;"><table style="width:1px;border-collapse:collapse;"><tr><td style="width:1px;background:linear-gradient(to bottom,#2de2fb,#3be692);height:100px;"></td></tr></table></td>
+            <td style="width:200px;padding:0 0 0 20px;vertical-align:middle;">
+              <table style="border-collapse:collapse;"><tr>
+                <td style="padding-right:8px;"><img src="img/GOOGLE.png" width="60" /></td>
+                <td style="padding-right:8px;"><img src="img/HUBSPOT.png" width="60" /></td>
+                <td><img src="img/META.png" width="60"/></td>
+              </tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" style="padding-top:8px;font-size:8px;color:#aaa;">
+              © ROCKIN MEDIA, S.L. | B87928743 – Calle de Marcenado 37, 28002, Madrid | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed;">Aviso legal</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="actions">
+      <button class="btn btn-gif" id="btn-gif" onclick="generateGIF()">Descargar GIF</button>
+      <button class="btn btn-html" onclick="copyHTML()">Copiar HTML</button>
+    </div>
+    <p class="status" id="status"></p>
+  </div>
+
+  <div class="instructions">
+    <h2>Cómo usar tu firma</h2>
+    <div class="step"><div class="step-num">1</div><p>Rellena tus datos y descarga el <strong>GIF</strong> o copia el <strong>HTML</strong>.</p></div>
+    <div class="step"><div class="step-num">2</div><p><strong>Gmail:</strong> Ajustes → Ver todos los ajustes → Firma → Insertar imagen → Subir el GIF.</p></div>
+    <div class="step"><div class="step-num">3</div><p><strong>Outlook:</strong> Archivo → Opciones → Correo → Firmas → Nueva → pegar el HTML.</p></div>
+    <div class="step"><div class="step-num">4</div><p><strong>Apple Mail:</strong> Mail → Preferencias → Firmas → pegar el HTML.</p></div>
+  </div>
+
+  <footer>rockin media · firma corporativa</footer>
+  <div id="firma-render"></div>
+
+  <script>
+    // Extrae frames de un GIF usando un canvas
+    async function extractGifFrames(url) {
+      const response = await fetch(url);
+      const buffer = await response.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      const gr = new GifReader(bytes);
+      const frames = [];
+      for (let i = 0; i < gr.numFrames(); i++) {
+        const info = gr.frameInfo(i);
+        const canvas = document.createElement('canvas');
+        canvas.width = gr.width;
+        canvas.height = gr.height;
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.createImageData(gr.width, gr.height);
+        gr.decodeAndBlitFrameRGBA(i, imageData.data);
+        ctx.putImageData(imageData, 0, 0);
+        frames.push({ canvas, delay: info.delay * 10 }); // delay en ms
+      }
+      return frames;
+    }
+
+    function updatePreview() {
+      const n = document.getElementById('nombre').value.trim() || 'Nombre';
+      const a = document.getElementById('apellidos').value.trim() || 'Apellidos';
+      const c = document.getElementById('cargo').value.trim() || 'Puesto / Cargo';
+      document.getElementById('prev-nombre').textContent = n + ' ' + a;
+      document.getElementById('prev-cargo').textContent = c;
+    }
+
+    function getHTML() {
+      const n = document.getElementById('nombre').value.trim();
+      const a = document.getElementById('apellidos').value.trim();
+      const c = document.getElementById('cargo').value.trim();
+      return `<table style="table-layout:fixed;border-collapse:collapse;width:600px;font-family:Montserrat,Arial,sans-serif;"><tbody><tr><td style="width:100px;padding-right:10px;"><img src="img/ROCKIN-2026.gif" width="100" style="display:block;border:0;max-width:100px;" /></td><td style="width:300px;padding:0;text-align:left;vertical-align:middle;"><div style="font-size:24px;font-weight:600;line-height:1.4;color:#111;">${n} ${a}</div><div style="font-size:12px;font-weight:400;text-transform:uppercase;letter-spacing:3px;display:inline-block;background:linear-gradient(to right,#2de2fb,#3be692);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${c}</div></td><td style="width:1px;padding:0;"><table style="width:1px;border-collapse:collapse;"><tr><td style="width:1px;background:linear-gradient(to bottom,#2de2fb,#3be692);height:120px;"></td></tr></table></td><td style="width:200px;padding:0 0 0 40px;text-align:left;"><table style="border-collapse:collapse;"><tr><td style="padding-right:20px;"><img src="img/GOOGLE.png" width="80" /></td><td><img src="img/HUBSPOT.png" width="80" /></td><td><img src="img/META.png" width="80"/></td></tr></table></td></tr><tr><td colspan="4" style="padding-top:10px;font-size:9px;line-height:12px;color:#888;">La información contenida en este mensaje es confidencial. © ROCKIN MEDIA, S.L. | B87928743 – Calle de Marcenado 37, 28002, Madrid | <a href="https://rockinmedia.es/aviso-legal" style="color:#3046ed;">Aviso legal</a></td></tr></tbody></table>`;
+    }
+
+    function copyHTML() {
+      navigator.clipboard.writeText(getHTML()).then(() => setStatus('¡HTML copiado!', 'success'));
+    }
+
+    function canvasToIndexed(canvas) {
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const pixels = ctx.getImageData(0, 0, w, h).data;
+      const colorMap = new Map();
+      const palette = [0xffffff];
+      colorMap.set(0xffffff, 0);
+      const indexed = new Uint8Array(w * h);
+      for (let i = 0; i < w * h; i++) {
+        const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2], a = pixels[i*4+3];
+        if (a < 128) { indexed[i] = 0; continue; }
+        const hex = (r << 16) | (g << 8) | b;
+        if (!colorMap.has(hex)) {
+          if (palette.length < 256) { colorMap.set(hex, palette.length); palette.push(hex); }
+          else {
+            let best = 0, bestDist = Infinity;
+            for (let p = 0; p < palette.length; p++) {
+              const pr = (palette[p] >> 16) & 0xff, pg = (palette[p] >> 8) & 0xff, pb = palette[p] & 0xff;
+              const d = (r-pr)**2 + (g-pg)**2 + (b-pb)**2;
+              if (d < bestDist) { bestDist = d; best = p; }
+            }
+            indexed[i] = best; continue;
+          }
+        }
+        indexed[i] = colorMap.get(hex);
+      }
+      let pow2 = 2;
+      while (pow2 < palette.length) pow2 *= 2;
+      pow2 = Math.min(pow2, 256);
+      while (palette.length < pow2) palette.push(0x000000);
+      return { indexed, palette, w, h };
+    }
+
+    async function generateGIF() {
+      const n = document.getElementById('nombre').value.trim();
+      const a = document.getElementById('apellidos').value.trim();
+      const c = document.getElementById('cargo').value.trim();
+      if (!n || !a || !c) { setStatus('Por favor, rellena todos los campos.', 'error'); return; }
+
+      const btn = document.getElementById('btn-gif');
+      btn.disabled = true;
+      setStatus('Extrayendo frames del logo...', 'loading');
+
+      try {
+        // 1. Extraer frames del logo GIF
+        const logoFrames = await extractGifFrames('img/ROCKIN-2026.gif');
+        setStatus(`Generando ${logoFrames.length} frames...`, 'loading');
+
+        // 2. Cargar imágenes de partners
+        const loadImg = src => new Promise((res, rej) => {
+          const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = src;
+        });
+        const [imgGoogle, imgHubspot, imgMeta] = await Promise.all([
+          loadImg('img/GOOGLE.png'), loadImg('img/HUBSPOT.png'), loadImg('img/META.png')
+        ]);
+
+        // 3. Para cada frame del logo, renderizar la firma completa
+        const firmaW = 640, firmaH = 160;
+        const gifFrames = [];
+
+        for (let fi = 0; fi < logoFrames.length; fi++) {
+          const fc = document.createElement('canvas');
+          fc.width = firmaW; fc.height = firmaH;
+          const ctx = fc.getContext('2d');
+
+          // Fondo blanco
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, firmaW, firmaH);
+
+          // Logo (frame actual)
+          ctx.drawImage(logoFrames[fi].canvas, 10, 20, 100, 100);
+
+          // Nombre
+          ctx.fillStyle = '#111111';
+          ctx.font = '600 24px Arial';
+          ctx.fillText(`${n} ${a}`, 120, 55);
+
+          // Cargo con color gradiente simulado
+          ctx.fillStyle = '#2de2fb';
+          ctx.font = '500 12px Arial';
+          ctx.fillText(c.toUpperCase(), 120, 80);
+
+          // Barra separadora
+          const grad = ctx.createLinearGradient(390, 20, 390, 120);
+          grad.addColorStop(0, '#2de2fb');
+          grad.addColorStop(1, '#3be692');
+          ctx.fillStyle = grad;
+          ctx.fillRect(390, 20, 2, 100);
+
+          // Logos partners
+          ctx.drawImage(imgGoogle, 405, 30, 65, 50);
+          ctx.drawImage(imgHubspot, 478, 30, 65, 50);
+          ctx.drawImage(imgMeta, 551, 30, 65, 50);
+
+          // Disclaimer
+          ctx.fillStyle = '#aaaaaa';
+          ctx.font = '8px Arial';
+          ctx.fillText('© ROCKIN MEDIA, S.L. | B87928743 – Calle de Marcenado 37, 28002, Madrid', 10, 148);
+
+          gifFrames.push({ canvas: fc, delay: logoFrames[fi].delay });
+        }
+
+        // 4. Codificar todos los frames en un GIF animado
+        setStatus('Codificando GIF animado...', 'loading');
+        const buf = new Uint8Array(firmaW * firmaH * gifFrames.length * 4);
+        const gf = new GifWriter(buf, firmaW, firmaH, { loop: 0 });
+
+        for (const frame of gifFrames) {
+          const { indexed, palette, w, h } = canvasToIndexed(frame.canvas);
+          gf.addFrame(0, 0, w, h, indexed, {
+            palette: palette,
+            delay: Math.round(frame.delay / 10), // centésimas de segundo
+          });
+        }
+
+        const gifData = buf.slice(0, gf.end());
+        const blob = new Blob([gifData], { type: 'image/gif' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `firma-${n}-${a}.gif`;
+        link.click();
+        URL.revokeObjectURL(url);
+        setStatus('¡GIF animado descargado!', 'success');
+
+      } catch (e) {
+        console.error(e);
+        setStatus('Error: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function setStatus(msg, type) {
+      const el = document.getElementById('status');
+      el.textContent = msg;
+      el.className = 'status ' + (type || '');
+      if (type === 'success') setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 3000);
+    }
+  </script>
+</body>
+</html>

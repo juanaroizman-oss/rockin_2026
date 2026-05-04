@@ -6,7 +6,7 @@
   <title>Generador de Firma · ROCKIN MEDIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Montserrat', Arial, sans-serif; background: #0a0a0a; color: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
@@ -261,63 +261,39 @@
           gifFrames.push({ canvas: fc, delay: logoFrames[fi].delay });
         }
 
-        // 4. Codificar con paleta por frame + disposal = 2 (restaurar fondo)
+        // 4. Codificar con gif.js usando worker local
         setStatus('Codificando GIF animado...', 'loading');
 
-        function frameToIndexed(canvas) {
-          const ctx = canvas.getContext('2d');
-          const w = canvas.width, h = canvas.height;
-          const pixels = ctx.getImageData(0, 0, w, h).data;
-          const colorMap = new Map();
-          const palette = [0xffffff, 0x000000];
-          colorMap.set(0xffffff, 0);
-          colorMap.set(0x000000, 1);
-          const indexed = new Uint8Array(w * h);
-          for (let i = 0; i < w * h; i++) {
-            const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2];
-            const hex = (r << 16) | (g << 8) | b;
-            if (!colorMap.has(hex)) {
-              if (palette.length < 256) { colorMap.set(hex, palette.length); palette.push(hex); }
-              else {
-                let best = 0, bestDist = Infinity;
-                for (let p = 0; p < palette.length; p++) {
-                  const pr = (palette[p] >> 16) & 0xff, pg = (palette[p] >> 8) & 0xff, pb = palette[p] & 0xff;
-                  const d = (r-pr)**2 + (g-pg)**2 + (b-pb)**2;
-                  if (d < bestDist) { bestDist = d; best = p; }
-                }
-                indexed[i] = best; continue;
-              }
-            }
-            indexed[i] = colorMap.get(hex);
-          }
-          let pow2 = 2;
-          while (pow2 < palette.length) pow2 *= 2;
-          pow2 = Math.min(pow2, 256);
-          while (palette.length < pow2) palette.push(0x000000);
-          return { indexed, palette, w, h };
-        }
-
-        const buf = new Uint8Array(firmaW * firmaH * gifFrames.length * 6);
-        const gf = new GifWriter(buf, firmaW, firmaH, { loop: 0 });
+        const gif = new GIF({
+          workers: 2,
+          quality: 10,
+          width: firmaW,
+          height: firmaH,
+          workerScript: 'gif.worker.js',
+          repeat: 0,
+        });
 
         for (const frame of gifFrames) {
-          const { indexed, palette, w, h } = frameToIndexed(frame.canvas);
-          gf.addFrame(0, 0, w, h, indexed, {
-            palette: palette,
-            delay: Math.round(frame.delay / 10),
-            disposal: 2, // restaurar fondo entre frames
-          });
+          gif.addFrame(frame.canvas, { delay: frame.delay, copy: true });
         }
 
-        const gifData = buf.slice(0, gf.end());
-        const blob = new Blob([gifData], { type: 'image/gif' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `firma-${n}-${a}.gif`;
-        link.click();
-        URL.revokeObjectURL(url);
-        setStatus('¡GIF animado descargado!', 'success');
+        gif.on('finished', (blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `firma-${n}-${a}.gif`;
+          link.click();
+          URL.revokeObjectURL(url);
+          setStatus('\u00a1GIF animado descargado!', 'success');
+          btn.disabled = false;
+        });
+
+        gif.on('progress', (p) => {
+          setStatus(`Codificando... ${Math.round(p * 100)}%`, 'loading');
+        });
+
+        gif.render();
+        return; // el finally se ejecuta antes del finished, lo manejamos en el evento
 
       } catch (e) {
         console.error(e);

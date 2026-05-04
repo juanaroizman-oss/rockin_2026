@@ -261,62 +261,51 @@
           gifFrames.push({ canvas: fc, delay: logoFrames[fi].delay });
         }
 
-        // 4. Paleta global para evitar parpadeo
+        // 4. Codificar con paleta por frame + disposal = 2 (restaurar fondo)
         setStatus('Codificando GIF animado...', 'loading');
 
-        const globalColorMap = new Map();
-        const globalPalette = [0xffffff, 0x000000];
-        globalColorMap.set(0xffffff, 0);
-        globalColorMap.set(0x000000, 1);
-
-        for (const frame of gifFrames) {
-          const ctx = frame.canvas.getContext('2d');
-          const pixels = ctx.getImageData(0, 0, firmaW, firmaH).data;
-          for (let i = 0; i < firmaW * firmaH; i += 4) {
+        function frameToIndexed(canvas) {
+          const ctx = canvas.getContext('2d');
+          const w = canvas.width, h = canvas.height;
+          const pixels = ctx.getImageData(0, 0, w, h).data;
+          const colorMap = new Map();
+          const palette = [0xffffff, 0x000000];
+          colorMap.set(0xffffff, 0);
+          colorMap.set(0x000000, 1);
+          const indexed = new Uint8Array(w * h);
+          for (let i = 0; i < w * h; i++) {
             const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2];
             const hex = (r << 16) | (g << 8) | b;
-            if (!globalColorMap.has(hex) && globalPalette.length < 256) {
-              globalColorMap.set(hex, globalPalette.length);
-              globalPalette.push(hex);
+            if (!colorMap.has(hex)) {
+              if (palette.length < 256) { colorMap.set(hex, palette.length); palette.push(hex); }
+              else {
+                let best = 0, bestDist = Infinity;
+                for (let p = 0; p < palette.length; p++) {
+                  const pr = (palette[p] >> 16) & 0xff, pg = (palette[p] >> 8) & 0xff, pb = palette[p] & 0xff;
+                  const d = (r-pr)**2 + (g-pg)**2 + (b-pb)**2;
+                  if (d < bestDist) { bestDist = d; best = p; }
+                }
+                indexed[i] = best; continue;
+              }
             }
+            indexed[i] = colorMap.get(hex);
           }
+          let pow2 = 2;
+          while (pow2 < palette.length) pow2 *= 2;
+          pow2 = Math.min(pow2, 256);
+          while (palette.length < pow2) palette.push(0x000000);
+          return { indexed, palette, w, h };
         }
 
-        let pow2 = 2;
-        while (pow2 < globalPalette.length) pow2 *= 2;
-        pow2 = Math.min(pow2, 256);
-        while (globalPalette.length < pow2) globalPalette.push(0x000000);
+        const buf = new Uint8Array(firmaW * firmaH * gifFrames.length * 6);
+        const gf = new GifWriter(buf, firmaW, firmaH, { loop: 0 });
 
-        const indexFrames = gifFrames.map(frame => {
-          const ctx = frame.canvas.getContext('2d');
-          const pixels = ctx.getImageData(0, 0, firmaW, firmaH).data;
-          const indexed = new Uint8Array(firmaW * firmaH);
-          for (let i = 0; i < firmaW * firmaH; i++) {
-            const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2];
-            const hex = (r << 16) | (g << 8) | b;
-            if (globalColorMap.has(hex)) {
-              indexed[i] = globalColorMap.get(hex);
-            } else {
-              let best = 0, bestDist = Infinity;
-              for (let p = 0; p < globalPalette.length; p++) {
-                const pr = (globalPalette[p] >> 16) & 0xff;
-                const pg = (globalPalette[p] >> 8) & 0xff;
-                const pb = globalPalette[p] & 0xff;
-                const d = (r-pr)**2 + (g-pg)**2 + (b-pb)**2;
-                if (d < bestDist) { bestDist = d; best = p; }
-              }
-              indexed[i] = best;
-            }
-          }
-          return { indexed, delay: frame.delay };
-        });
-
-        const buf = new Uint8Array(firmaW * firmaH * gifFrames.length * 4);
-        const gf = new GifWriter(buf, firmaW, firmaH, { loop: 0, palette: globalPalette });
-
-        for (const frame of indexFrames) {
-          gf.addFrame(0, 0, firmaW, firmaH, frame.indexed, {
+        for (const frame of gifFrames) {
+          const { indexed, palette, w, h } = frameToIndexed(frame.canvas);
+          gf.addFrame(0, 0, w, h, indexed, {
+            palette: palette,
             delay: Math.round(frame.delay / 10),
+            disposal: 2, // restaurar fondo entre frames
           });
         }
 

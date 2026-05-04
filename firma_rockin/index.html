@@ -175,7 +175,7 @@
         ]);
 
         const scale = 2;
-        const firmaW = 640 * scale, firmaH = 160 * scale;
+        const firmaW = 640 * scale, firmaH = 220 * scale;
         const gifFrames = [];
 
         for (let fi = 0; fi < logoFrames.length; fi++) {
@@ -186,7 +186,7 @@
 
           // Fondo blanco
           ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, 640, 160);
+          ctx.fillRect(0, 0, 640, 220);
 
           // Fondo negro para el logo
           ctx.fillStyle = '#000000';
@@ -197,8 +197,8 @@
 
           // Nombre
           ctx.fillStyle = '#111111';
-          ctx.font = '600 22px Montserrat, Arial';
-          ctx.fillText(`${n} ${a}`, 140, 52);
+          ctx.font = '600 26px Montserrat, Arial';
+          ctx.fillText(`${n} ${a}`, 140, 50);
 
           // Cargo con degradado
           const cargoText = c.toUpperCase();
@@ -236,17 +236,17 @@
           const lineH = 9;
           const dWords = disclaimer.split(' ');
           let dLine = '';
-          let dy = 127;
+          let dy = 138;
           for (let dw of dWords) {
             const test = dLine + dw + ' ';
             if (ctx.measureText(test).width > maxLineW && dLine !== '') {
               ctx.fillText(dLine.trim(), 10, dy);
               dLine = dw + ' ';
               dy += lineH;
-              if (dy > 158) break;
+              if (dy > 218) break;
             } else { dLine = test; }
           }
-          if (dy <= 158) ctx.fillText(dLine.trim(), 10, dy);
+          if (dy <= 218) ctx.fillText(dLine.trim(), 10, dy);
 
           gifFrames.push({ canvas: fc, delay: logoFrames[fi].delay });
         }

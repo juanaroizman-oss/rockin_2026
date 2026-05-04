@@ -197,12 +197,12 @@
 
           // Nombre
           ctx.fillStyle = '#111111';
-          ctx.font = '600 24px Arial';
-          ctx.fillText(`${n} ${a}`, 140, 55);
+          ctx.font = '600 22px Montserrat, Arial';
+          ctx.fillText(`${n} ${a}`, 140, 52);
 
           // Cargo con degradado
           const cargoText = c.toUpperCase();
-          ctx.font = '500 12px Arial';
+          ctx.font = '400 11px Montserrat, Arial';
           const cargoWidth = ctx.measureText(cargoText).width;
           const cargoGrad = ctx.createLinearGradient(140, 0, 140 + cargoWidth, 0);
           cargoGrad.addColorStop(0, '#2de2fb');
